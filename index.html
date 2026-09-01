@@ -1,0 +1,1608 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>抽蛋計算器</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            color-scheme: dark;
+            --bg: #080b12;
+            --bg-soft: #0d111a;
+            --card: rgba(18, 23, 35, 0.88);
+            --card-2: #111827;
+            --border: rgba(148, 163, 184, 0.14);
+            --border-strong: rgba(148, 163, 184, 0.22);
+            --text: #f3f6fb;
+            --muted: #94a3b8;
+            --primary: #8b5cf6;
+            --primary-2: #6366f1;
+            --primary-glow: rgba(139, 92, 246, 0.24);
+            --success: #34d399;
+            --danger: #fb7185;
+            --warning: #fbbf24;
+            --radius: 18px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            padding: 32px 20px 60px;
+            font-family:
+                -apple-system, BlinkMacSystemFont, "Segoe UI",
+                "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+            background:
+                radial-gradient(circle at 15% 0%, rgba(99, 102, 241, 0.15), transparent 32rem),
+                radial-gradient(circle at 85% 10%, rgba(139, 92, 246, 0.12), transparent 30rem),
+                var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: linear-gradient(to bottom, black, transparent 75%);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            position: relative;
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            font-size: clamp(28px, 5vw, 42px);
+            letter-spacing: -0.04em;
+            line-height: 1.15;
+            background: linear-gradient(135deg, #ffffff 10%, #c4b5fd 80%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .description {
+            color: var(--muted);
+            margin-bottom: 28px;
+            font-size: 15px;
+        }
+
+        .card {
+            background: linear-gradient(180deg, rgba(20, 26, 40, 0.94), rgba(14, 19, 30, 0.94));
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 22px;
+            margin-bottom: 18px;
+            box-shadow:
+                0 18px 45px rgba(0, 0, 0, 0.22),
+                inset 0 1px 0 rgba(255,255,255,0.025);
+            backdrop-filter: blur(14px);
+        }
+
+        .card h2 {
+            margin: 0 0 18px;
+            font-size: 18px;
+            letter-spacing: -0.02em;
+        }
+
+        label {
+            display: block;
+            font-weight: 650;
+            margin-bottom: 7px;
+            color: #dbe4f2;
+        }
+
+        input {
+            width: 100%;
+            padding: 11px 13px;
+            border: 1px solid var(--border-strong);
+            border-radius: 11px;
+            font-size: 15px;
+            background: rgba(7, 11, 19, 0.72);
+            color: var(--text);
+            transition: 0.18s ease;
+        }
+
+        input::placeholder {
+            color: #64748b;
+        }
+
+        input:hover {
+            border-color: rgba(148, 163, 184, 0.32);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow:
+                0 0 0 3px var(--primary-glow),
+                0 0 25px rgba(139, 92, 246, 0.08);
+        }
+
+        input[type="number"] {
+            font-variant-numeric: tabular-nums;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            background: rgba(5, 8, 14, 0.3);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr {
+            transition: background 0.15s ease;
+        }
+
+        tbody tr:hover {
+            background: rgba(139, 92, 246, 0.035);
+        }
+
+        th {
+            background: rgba(30, 41, 59, 0.5);
+            color: #aebbd0;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 700;
+        }
+
+        td {
+            color: #dbe4f2;
+        }
+
+        td input {
+            min-width: 90px;
+        }
+
+        button {
+            border: 1px solid transparent;
+            border-radius: 10px;
+            padding: 9px 14px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 650;
+            color: var(--text);
+            transition: transform 0.16s ease, opacity 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            opacity: 0.96;
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-2), var(--primary));
+            box-shadow: 0 8px 22px rgba(99, 102, 241, 0.22);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 10px 28px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(30, 41, 59, 0.75);
+            color: #d8e0ed;
+            border-color: var(--border-strong);
+        }
+
+        .btn-secondary:hover {
+            border-color: rgba(139, 92, 246, 0.4);
+            background: rgba(51, 45, 75, 0.65);
+        }
+
+        .btn-danger {
+            background: rgba(244, 63, 94, 0.1);
+            color: #fb7185;
+            border-color: rgba(244, 63, 94, 0.18);
+        }
+
+        .btn-danger:hover {
+            background: rgba(244, 63, 94, 0.16);
+            border-color: rgba(244, 63, 94, 0.32);
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .summary-item {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.58), rgba(15, 23, 42, 0.72));
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 16px;
+        }
+
+        .summary-item::after {
+            content: "";
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            right: -25px;
+            top: -30px;
+            border-radius: 50%;
+            background: var(--primary-glow);
+            filter: blur(12px);
+        }
+
+        .summary-title {
+            color: var(--muted);
+            font-size: 12px;
+            margin-bottom: 7px;
+        }
+
+        .summary-value {
+            font-size: clamp(20px, 3vw, 25px);
+            font-weight: 750;
+            letter-spacing: -0.02em;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .probability-info {
+            margin-top: 14px;
+            padding: 12px 14px;
+            border-radius: 11px;
+            background: rgba(148, 163, 184, 0.06);
+            border: 1px solid var(--border);
+            color: #b7c4d7;
+        }
+
+        .probability-ok {
+            color: var(--success);
+            background: rgba(52, 211, 153, 0.06);
+            border-color: rgba(52, 211, 153, 0.14);
+        }
+
+        .probability-warning {
+            color: var(--warning);
+            background: rgba(251, 191, 36, 0.06);
+            border-color: rgba(251, 191, 36, 0.14);
+        }
+
+        .result-table {
+            margin-top: 15px;
+        }
+
+        .positive {
+            color: var(--success);
+            text-shadow: 0 0 18px rgba(52, 211, 153, 0.15);
+        }
+
+        .negative {
+            color: var(--danger);
+            text-shadow: 0 0 18px rgba(251, 113, 133, 0.15);
+        }
+
+        .empty {
+            text-align: center;
+            color: #64748b;
+            padding: 22px;
+        }
+
+        .note {
+            font-size: 13px;
+            color: #718096;
+            margin-top: 9px;
+            line-height: 1.65;
+        }
+
+
+        /* Google AdSense 廣告區塊 */
+        .ad-container {
+            max-width: 1100px;
+            margin: 26px auto 0;
+            padding: 18px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: rgba(14, 19, 30, 0.72);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.14);
+            overflow: hidden;
+        }
+
+        .ad-label {
+            text-align: center;
+            color: #64748b;
+            font-size: 11px;
+            margin-bottom: 8px;
+            letter-spacing: 0.05em;
+        }
+
+        .ad-container .adsbygoogle {
+            min-height: 90px;
+        }
+
+        @media (max-width: 700px) {
+            body {
+                padding: 20px 12px 40px;
+            }
+
+            .card {
+                padding: 16px;
+                border-radius: 15px;
+            }
+
+            .summary {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+        }
+
+        @media (max-width: 430px) {
+            .summary {
+                grid-template-columns: 1fr;
+            }
+
+            .actions button {
+                flex: 1 1 auto;
+            }
+        }
+
+    </style>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5098041229443474"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🎲 抽蛋計算器</h1>
+    <div class="description">
+        計算抽蛋的成本、獎品期望數量與期望價值。
+    </div>
+
+    <!-- 基本設定 -->
+    <div class="card">
+        <h2>⚙️ 基本設定</h2>
+
+        <div class="form-group">
+            <label for="pullCount">抽蛋次數</label>
+            <input
+                id="pullCount"
+                type="number"
+                min="0"
+                step="1"
+                value="100"
+                oninput="calculate()"
+            >
+        </div>
+
+        <div class="note">
+            例如輸入 100，即計算抽 100 次的期望結果。
+        </div>
+
+        <div class="form-group">
+            <label for="bonusEvery">送抽優惠</label>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                <input
+                    id="bonusEvery"
+                    type="number"
+                    min="0"
+                    step="1"
+                    value="0"
+                    placeholder="例如：10"
+                    oninput="calculate()"
+                >
+                <input
+                    id="bonusCount"
+                    type="number"
+                    min="0"
+                    step="1"
+                    value="0"
+                    placeholder="例如：1"
+                    oninput="calculate()"
+                >
+            </div>
+            <div class="note">
+                每買 <strong>N</strong> 抽送 <strong>M</strong> 抽；例如「10 送 1」就輸入 10、1。
+                不使用送抽優惠時兩欄都填 0。
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 抽蛋成本 -->
+    <div class="card">
+        <h2>💰 抽蛋成本</h2>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>成本項目</th>
+                        <th>每次成本</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+
+                <tbody id="costTable">
+                </tbody>
+            </table>
+        </div>
+
+        <div class="actions">
+            <button class="btn-secondary" onclick="addCost()">
+                ＋ 新增成本
+            </button>
+        </div>
+
+        <div class="note">
+            可以設定多項成本，例如：
+            寶石 300、金幣 1000、現金 $2.99。
+            計算結果會分別顯示每項成本的總成本，不會只顯示合計。
+            如果免費抽蛋，可以完全不新增成本。
+        </div>
+    </div>
+
+
+    <!-- 獎品 -->
+    <div class="card">
+        <h2>🎁 獎品設定</h2>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>獎品名稱</th>
+                        <th>每次獲得數量</th>
+                        <th>出現機率 (%)</th>
+                        <th>單價 / 價值</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+
+                <tbody id="prizeTable">
+                </tbody>
+            </table>
+        </div>
+
+        <div class="actions">
+            <button class="btn-secondary" onclick="addPrize()">
+                ＋ 新增獎品
+            </button>
+
+            <button class="btn-primary" onclick="document.getElementById('prizeFileInput').click()">
+                📥 載入表格檔案
+            </button>
+
+            <button class="btn-secondary" onclick="pastePrizeTable()">
+                📋 貼上表格文字
+            </button>
+
+            <input
+                id="prizeFileInput"
+                type="file"
+                accept=".txt,.csv,text/plain,text/csv"
+                style="display:none"
+                onchange="importPrizeFile(this)"
+            >
+        </div>
+
+        <div class="note">
+            可直接載入你這種「道具名稱／數量／獲得機率」的 TXT 或 CSV 表格。
+            匯入後會取代目前的獎品設定；之後計算結果仍會自動合併同名獎品。
+        </div>
+
+        <div id="probabilityInfo" class="probability-info">
+            機率總和：0%
+        </div>
+
+        <div class="note">
+            「單價 / 價值」可以自行定義，例如遊戲內商城價格、轉售價值、
+            金幣價值等。若不需要計算期望價值，可以留 0。
+        </div>
+    </div>
+
+
+    <!-- 結果 -->
+    <div class="card">
+        <h2>📊 計算結果</h2>
+
+        <div class="summary">
+
+            <div class="summary-item">
+                <div class="summary-title">實際抽蛋次數</div>
+                <div class="summary-value" id="resultPulls">
+                    0
+                </div>
+            </div>
+
+            <div class="summary-item">
+                <div class="summary-title">付費抽數</div>
+                <div class="summary-value" id="resultPaidPulls">
+                    0
+                </div>
+            </div>
+
+            <div class="summary-item">
+                <div class="summary-title">期望總價值</div>
+                <div class="summary-value" id="resultValue">
+                    0
+                </div>
+            </div>
+
+            <div class="summary-item">
+                <div class="summary-title">期望淨收益</div>
+                <div class="summary-value" id="resultProfit">
+                    0
+                </div>
+            </div>
+
+        </div>
+
+        <div style="margin-top:15px;">
+            <h3 style="margin:0 0 10px;font-size:15px;color:#dbe4f2;">💰 成本明細</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>成本項目</th>
+                            <th>每抽成本</th>
+                            <th>總成本</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultCostTable">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <div class="note">
+            同名獎品會在這裡自動合併；機率、期望獲得數量與期望價值會分別加總。
+            若同名獎品的「每次數量」設定不同，該欄會顯示「多種」。
+        </div>
+
+        <div class="table-wrapper result-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>獎品</th>
+                        <th>出現機率</th>
+                        <th>每次數量</th>
+                        <th>期望獲得數量</th>
+                        <th>期望價值</th>
+                    </tr>
+                </thead>
+
+                <tbody id="resultTable">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <!-- 操作 -->
+    <div class="card">
+        <h2>💾 設定</h2>
+
+        <div class="actions">
+           
+
+            <button class="btn-danger" onclick="resetData()">
+                🗑️ 重設
+            </button>
+        </div>
+
+        
+    </div>
+
+</div>
+
+
+    <!-- Google AdSense 廣告 -->
+    <div class="ad-container">
+        <div class="ad-label">廣告</div>
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-5098041229443474"
+             data-ad-slot="3999718042"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+    </div>
+
+<footer style="max-width:1100px;margin:26px auto 0;text-align:center;color:#64748b;font-size:13px;">
+    @歐小龍 2026/9/1 更新
+</footer>
+
+
+<script>
+
+    // =========================
+    // 初始資料
+    // =========================
+
+    let costs = [];
+
+    let prizes = [
+        {
+            name: "SSR 獎品",
+            quantity: 1,
+            probability: 1,
+            value: 1000
+        },
+        {
+            name: "SR 獎品",
+            quantity: 1,
+            probability: 9,
+            value: 100
+        },
+        {
+            name: "普通獎品",
+            quantity: 1,
+            probability: 90,
+            value: 10
+        }
+    ];
+
+
+    // =========================
+    // 成本
+    // =========================
+
+    function addCost(
+        name = "",
+        amount = 0
+    ) {
+        costs.push({
+            name: name,
+            amount: amount
+        });
+
+        renderCosts();
+        calculate();
+    }
+
+
+    function removeCost(index) {
+        costs.splice(index, 1);
+
+        renderCosts();
+        calculate();
+    }
+
+
+    function renderCosts() {
+
+        const tbody = document.getElementById("costTable");
+
+        tbody.innerHTML = "";
+
+        if (costs.length === 0) {
+
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="3" class="empty">
+                        尚未設定成本（可代表免費抽蛋）
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+
+        costs.forEach((cost, index) => {
+
+            const tr = document.createElement("tr");
+
+            tr.innerHTML = `
+                <td>
+                    <input
+                        type="text"
+                        value="${escapeHtml(cost.name)}"
+                        placeholder="例如：寶石"
+                        oninput="updateCost(${index}, 'name', this.value)"
+                    >
+                </td>
+
+                <td>
+                    <input
+                        type="number"
+                        min="0"
+                        step="any"
+                        value="${cost.amount}"
+                        oninput="updateCost(${index}, 'amount', this.value)"
+                    >
+                </td>
+
+                <td>
+                    <button
+                        class="btn-danger"
+                        onclick="removeCost(${index})"
+                    >
+                        刪除
+                    </button>
+                </td>
+            `;
+
+            tbody.appendChild(tr);
+        });
+    }
+
+
+    function updateCost(index, key, value) {
+
+        if (key === "amount") {
+            costs[index][key] = Number(value) || 0;
+        } else {
+            costs[index][key] = value;
+        }
+
+        calculate();
+    }
+
+
+    // =========================
+    // 獎品
+    // =========================
+
+    function addPrize(
+        name = "新獎品",
+        quantity = 1,
+        probability = 0,
+        value = 0
+    ) {
+
+        prizes.push({
+            name,
+            quantity,
+            probability,
+            value
+        });
+
+        renderPrizes();
+        calculate();
+    }
+
+
+    function removePrize(index) {
+
+        prizes.splice(index, 1);
+
+        renderPrizes();
+        calculate();
+    }
+
+
+    function renderPrizes() {
+
+        const tbody = document.getElementById("prizeTable");
+
+        tbody.innerHTML = "";
+
+
+        if (prizes.length === 0) {
+
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="5" class="empty">
+                        尚未設定獎品
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+
+        prizes.forEach((prize, index) => {
+
+            const tr = document.createElement("tr");
+
+            tr.innerHTML = `
+
+                <td>
+                    <input
+                        type="text"
+                        value="${escapeHtml(prize.name)}"
+                        placeholder="獎品名稱"
+                        oninput="updatePrize(${index}, 'name', this.value)"
+                    >
+                </td>
+
+                <td>
+                    <input
+                        type="number"
+                        min="0"
+                        step="any"
+                        value="${prize.quantity}"
+                        oninput="updatePrize(${index}, 'quantity', this.value)"
+                    >
+                </td>
+
+                <td>
+                    <input
+                        type="number"
+                        min="0"
+                        max="100"
+                        step="any"
+                        value="${prize.probability}"
+                        oninput="updatePrize(${index}, 'probability', this.value)"
+                    >
+                </td>
+
+                <td>
+                    <input
+                        type="number"
+                        min="0"
+                        step="any"
+                        value="${prize.value}"
+                        oninput="updatePrize(${index}, 'value', this.value)"
+                    >
+                </td>
+
+                <td>
+                    <button
+                        class="btn-danger"
+                        onclick="removePrize(${index})"
+                    >
+                        刪除
+                    </button>
+                </td>
+            `;
+
+            tbody.appendChild(tr);
+        });
+    }
+
+
+    function updatePrize(index, key, value) {
+
+        if (
+            key === "quantity" ||
+            key === "probability" ||
+            key === "value"
+        ) {
+            prizes[index][key] = Number(value) || 0;
+        } else {
+            prizes[index][key] = value;
+        }
+
+        calculate();
+    }
+
+
+    // =========================
+    // 計算
+    // =========================
+
+    function calculate() {
+
+        const paidPulls =
+            Math.max(0, Number(document.getElementById("pullCount").value) || 0);
+
+        const bonusEvery =
+            Math.max(0, Math.floor(Number(document.getElementById("bonusEvery").value) || 0));
+
+        const bonusCount =
+            Math.max(0, Math.floor(Number(document.getElementById("bonusCount").value) || 0));
+
+        // 例如 10 送 1：每付費 10 抽，額外送 1 抽。
+        const bonusPulls =
+            bonusEvery > 0 && bonusCount > 0
+                ? Math.floor(paidPulls / bonusEvery) * bonusCount
+                : 0;
+
+        const pulls = paidPulls + bonusPulls;
+
+
+        // 成本
+
+        let costPerPull = 0;
+
+        costs.forEach(cost => {
+            costPerPull += Number(cost.amount) || 0;
+        });
+
+        // 成本只按付費抽數計算；送抽不會產生成本。
+        const totalCost =
+            costPerPull * paidPulls;
+
+
+        // 機率
+
+        let probabilityTotal = 0;
+
+        prizes.forEach(prize => {
+            probabilityTotal +=
+                Number(prize.probability) || 0;
+        });
+
+
+        const probabilityInfo =
+            document.getElementById("probabilityInfo");
+
+
+        probabilityInfo.innerHTML =
+            `機率總和：<strong>${formatNumber(probabilityTotal)}%</strong>`;
+
+
+        if (Math.abs(probabilityTotal - 100) < 0.000001) {
+
+            probabilityInfo.className =
+                "probability-info probability-ok";
+
+            probabilityInfo.innerHTML +=
+                "　✓ 機率設定正確";
+
+        } else {
+
+            probabilityInfo.className =
+                "probability-info probability-warning";
+
+            probabilityInfo.innerHTML +=
+                "　⚠ 建議將機率總和設定為 100%";
+        }
+
+
+        // 獎品計算
+        //
+        // 同名獎品會在「計算結果」中自動合併：
+        // - 出現機率：相加
+        // - 期望獲得數量：相加
+        // - 期望價值：相加
+        // 輸入區仍保留原本每一筆設定，方便設定不同數量／機率／價值。
+
+        let totalItems = 0;
+
+        let totalValue = 0;
+
+        const resultTable =
+            document.getElementById("resultTable");
+
+        resultTable.innerHTML = "";
+
+        const resultCostTable =
+            document.getElementById("resultCostTable");
+
+        resultCostTable.innerHTML = "";
+
+        // 用名稱作為合併鍵；去除名稱前後空白，避免「 星之珠寶 」與「星之珠寶」
+        // 被視為兩個不同獎品。
+        const mergedPrizes = new Map();
+
+        if (costs.length === 0) {
+            resultCostTable.innerHTML = `
+                <tr>
+                    <td colspan="3" class="empty">尚未設定成本（免費抽蛋）</td>
+                </tr>
+            `;
+        } else {
+            costs.forEach(cost => {
+                const amount = Number(cost.amount) || 0;
+                const itemTotal = amount * paidPulls;
+                const tr = document.createElement("tr");
+
+                tr.innerHTML = `
+                    <td>${escapeHtml(cost.name || "未命名成本")}</td>
+                    <td>${formatNumber(amount)}</td>
+                    <td><strong>${formatNumber(itemTotal)}</strong></td>
+                `;
+
+                resultCostTable.appendChild(tr);
+            });
+        }
+
+
+        prizes.forEach(prize => {
+
+            const probabilityPercent =
+                Number(prize.probability) || 0;
+
+            const probability =
+                probabilityPercent / 100;
+
+            const quantity =
+                Number(prize.quantity) || 0;
+
+            const value =
+                Number(prize.value) || 0;
+
+
+            // 期望獲得數量
+            //
+            // 抽 N 次
+            // 每次出現機率 P
+            // 每次獲得 Q 個
+            //
+            // E = N × P × Q
+
+            const expectedQuantity =
+                pulls * probability * quantity;
+
+
+            const expectedValue =
+                expectedQuantity * value;
+
+            const displayName =
+                String(prize.name || "未命名").trim() || "未命名";
+
+            // 同名獎品自動合併。
+            // expectedQuantity / expectedValue 不能直接用「合併後的機率 ×
+            // 任一筆數量」計算，所以每一筆先各自計算，再累加。
+            if (!mergedPrizes.has(displayName)) {
+                mergedPrizes.set(displayName, {
+                    probabilityPercent: 0,
+                    expectedQuantity: 0,
+                    expectedValue: 0,
+                    quantities: []
+                });
+            }
+
+            const merged = mergedPrizes.get(displayName);
+
+            merged.probabilityPercent += probabilityPercent;
+            merged.expectedQuantity += expectedQuantity;
+            merged.expectedValue += expectedValue;
+
+            if (!merged.quantities.includes(quantity)) {
+                merged.quantities.push(quantity);
+            }
+
+            totalItems += expectedQuantity;
+            totalValue += expectedValue;
+
+        });
+
+        // 輸出合併後的結果
+        mergedPrizes.forEach((merged, displayName) => {
+
+            const tr =
+                document.createElement("tr");
+
+            // 同名獎品如果每筆「每次數量」都相同，就直接顯示；
+            // 如果不同，顯示「多種」避免誤導。
+            const quantityText =
+                merged.quantities.length === 1
+                    ? formatNumber(merged.quantities[0])
+                    : "多種";
+
+            tr.innerHTML = `
+
+                <td>
+                    ${escapeHtml(displayName)}
+                </td>
+
+                <td>
+                    ${formatNumber(merged.probabilityPercent)}%
+                </td>
+
+                <td>
+                    ${quantityText}
+                </td>
+
+                <td>
+                    <strong>
+                        ${formatNumber(merged.expectedQuantity)}
+                    </strong>
+                </td>
+
+                <td>
+                    ${formatNumber(merged.expectedValue)}
+                </td>
+            `;
+
+            resultTable.appendChild(tr);
+        });
+
+
+        const profit =
+            totalValue - totalCost;
+
+
+        // 顯示結果
+
+        document.getElementById("resultPulls")
+            .textContent =
+            formatNumber(pulls);
+
+        document.getElementById("resultPaidPulls")
+            .textContent =
+            formatNumber(paidPulls);
+
+
+        document.getElementById("resultCost")
+            .textContent =
+            formatNumber(costPerPull);
+
+
+        document.getElementById("resultTotalCost")
+            .textContent =
+            formatNumber(totalCost);
+
+
+        document.getElementById("resultTotalItems")
+            .textContent =
+            formatNumber(totalItems);
+
+
+        document.getElementById("resultValue")
+            .textContent =
+            formatNumber(totalValue);
+
+
+        const profitElement =
+            document.getElementById("resultProfit");
+
+
+        profitElement.textContent =
+            formatNumber(profit);
+
+
+        profitElement.className =
+            "summary-value " +
+            (profit > 0
+                ? "positive"
+                : profit < 0
+                    ? "negative"
+                    : "");
+
+
+        // 自動儲存
+        localStorage.setItem(
+            "gachaCalculatorAutoSave",
+            JSON.stringify(getData())
+        );
+    }
+
+
+    // =========================
+    // 儲存 / 載入
+    // =========================
+
+    function getData() {
+
+        return {
+            pullCount:
+                document.getElementById("pullCount").value,
+
+            bonusEvery:
+                document.getElementById("bonusEvery").value,
+
+            bonusCount:
+                document.getElementById("bonusCount").value,
+
+            costs: costs,
+
+            prizes: prizes
+        };
+    }
+
+
+    function saveData() {
+
+        localStorage.setItem(
+            "gachaCalculator",
+            JSON.stringify(getData())
+        );
+
+        alert("設定已儲存！");
+    }
+
+
+    function loadData() {
+
+        const saved =
+            localStorage.getItem("gachaCalculator");
+
+        const autoSaved =
+            localStorage.getItem("gachaCalculatorAutoSave");
+
+
+        const data =
+            saved
+                ? JSON.parse(saved)
+                : autoSaved
+                    ? JSON.parse(autoSaved)
+                    : null;
+
+
+        if (!data) {
+
+            alert("沒有找到已儲存的設定。");
+
+            return;
+        }
+
+
+        document.getElementById("pullCount").value =
+            data.pullCount ?? 100;
+
+        document.getElementById("bonusEvery").value =
+            data.bonusEvery ?? 0;
+
+        document.getElementById("bonusCount").value =
+            data.bonusCount ?? 0;
+
+
+        costs =
+            Array.isArray(data.costs)
+                ? data.costs
+                : [];
+
+
+        prizes =
+            Array.isArray(data.prizes)
+                ? data.prizes
+                : [];
+
+
+        renderCosts();
+
+        renderPrizes();
+
+        calculate();
+    }
+
+
+    function resetData() {
+
+        if (!confirm("確定要重設所有設定嗎？")) {
+            return;
+        }
+
+
+        costs = [];
+
+        prizes = [
+            {
+                name: "SSR 獎品",
+                quantity: 1,
+                probability: 1,
+                value: 1000
+            },
+            {
+                name: "SR 獎品",
+                quantity: 1,
+                probability: 9,
+                value: 100
+            },
+            {
+                name: "普通獎品",
+                quantity: 1,
+                probability: 90,
+                value: 10
+            }
+        ];
+
+
+        document.getElementById("pullCount").value = 100;
+        document.getElementById("bonusEvery").value = 0;
+        document.getElementById("bonusCount").value = 0;
+
+
+        localStorage.removeItem("gachaCalculator");
+
+        localStorage.removeItem(
+            "gachaCalculatorAutoSave"
+        );
+
+
+        renderCosts();
+
+        renderPrizes();
+
+        calculate();
+    }
+
+
+    // =========================
+    // 工具
+    // =========================
+
+    function formatNumber(number) {
+
+        if (!Number.isFinite(number)) {
+            return "0";
+        }
+
+
+        return number.toLocaleString(
+            "zh-Hant",
+            {
+                maximumFractionDigits: 4
+            }
+        );
+    }
+
+
+    function escapeHtml(text) {
+
+        return String(text)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+
+    // =========================
+    // 匯入獎品表格
+    // =========================
+
+    function importPrizeFile(input) {
+
+        const file = input.files && input.files[0];
+
+        if (!file) {
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = function(event) {
+
+            const text = String(event.target.result || "");
+
+            importPrizeTableText(text, file.name);
+
+            // 允許再次選同一個檔案時也能觸發 change。
+            input.value = "";
+        };
+
+        reader.onerror = function() {
+            alert("讀取檔案失敗，請確認檔案格式。");
+            input.value = "";
+        };
+
+        reader.readAsText(file, "UTF-8");
+    }
+
+
+    function pastePrizeTable() {
+
+        const text = prompt(
+            "請把表格內容貼在下面。\n\n" +
+            "支援：\n" +
+            "1. 直接從網頁／Excel 複製的三欄表格\n" +
+            "2. 「道具名稱、數量、獲得機率」各自換行的文字格式\n\n" +
+            "例如：\n" +
+            "[活動] 失去光芒的摯友星\\t3\\t17.30%"
+        );
+
+        if (text === null) {
+            return;
+        }
+
+        importPrizeTableText(text, "貼上的表格");
+    }
+
+
+    function importPrizeTableText(text, sourceName = "表格") {
+
+        const parsed = parsePrizeTable(text);
+
+        if (parsed.length === 0) {
+            alert(
+                "找不到可辨識的獎品資料。\n\n" +
+                "請確認格式包含：獎品名稱、數量、獲得機率，例如：\n" +
+                "[活動] 失去光芒的摯友星    3    17.30%"
+            );
+            return;
+        }
+
+        const invalid = parsed.filter(prize =>
+            !prize.name ||
+            !Number.isFinite(prize.quantity) ||
+            !Number.isFinite(prize.probability)
+        );
+
+        if (invalid.length > 0) {
+            alert("表格中有無法辨識的資料，請檢查後再匯入。");
+            return;
+        }
+
+        const totalProbability = parsed.reduce(
+            (sum, prize) => sum + prize.probability,
+            0
+        );
+
+        const message =
+            `從「${sourceName}」讀到 ${parsed.length} 筆獎品。\n` +
+            `機率合計：${formatNumber(totalProbability)}%\n\n` +
+            "匯入後會取代目前的獎品設定，確定要匯入嗎？";
+
+        if (!confirm(message)) {
+            return;
+        }
+
+        prizes = parsed;
+
+        renderPrizes();
+        calculate();
+    }
+
+
+    function parsePrizeTable(text) {
+
+        const cleaned = String(text || "")
+            .replace(/\r/g, "")
+            .replace(/\uFEFF/g, "")
+            .trim();
+
+        if (!cleaned) {
+            return [];
+        }
+
+        // 格式 A：從網頁／Excel 複製的三欄資料。
+        // 例如：「名稱\t數量\t機率」
+        const lines = cleaned
+            .split("\n")
+            .map(line => line.trim())
+            .filter(Boolean);
+
+        const result = [];
+
+        for (const line of lines) {
+
+            // 支援 Tab、連續空白，以及常見全形空白。
+            const parts = line
+                .split(/\t+|\s{2,}|　+/)
+                .map(part => part.trim())
+                .filter(Boolean);
+
+            if (parts.length >= 3) {
+
+                const probabilityText = parts[parts.length - 1]
+                    .replace(/%/g, "")
+                    .replace(/,/g, "");
+
+                const quantityText = parts[parts.length - 2]
+                    .replace(/,/g, "");
+
+                const probability = Number(probabilityText);
+                const quantity = Number(quantityText);
+
+                if (
+                    parts[0] &&
+                    Number.isFinite(quantity) &&
+                    Number.isFinite(probability)
+                ) {
+                    result.push({
+                        name: parts.slice(0, -2).join(" "),
+                        quantity: quantity,
+                        probability: probability,
+                        value: 0
+                    });
+                }
+            }
+        }
+
+        if (result.length > 0) {
+            return result;
+        }
+
+        // 格式 B：像你提供的 TXT：
+        // 名稱
+        // 數量
+        // 機率
+        //
+        // 前面會有一次「道具名稱／數量／獲得機率」標題，
+        // 所以先移除標題，再每三行解析一筆。
+        const rows = lines.filter(line => {
+            const normalized = line.replace(/\s/g, "");
+
+            return ![
+                "道具名稱",
+                "名稱",
+                "數量",
+                "獲得機率",
+                "獲取機率",
+                "獲得概率"
+            ].includes(normalized);
+        });
+
+        for (let i = 0; i + 2 < rows.length; i += 3) {
+
+            const name = rows[i].trim();
+
+            const quantityText = rows[i + 1]
+                .replace(/,/g, "")
+                .trim();
+
+            const probabilityText = rows[i + 2]
+                .replace(/%/g, "")
+                .replace(/,/g, "")
+                .trim();
+
+            const quantity = Number(quantityText);
+            const probability = Number(probabilityText);
+
+            if (
+                name &&
+                Number.isFinite(quantity) &&
+                Number.isFinite(probability)
+            ) {
+                result.push({
+                    name: name,
+                    quantity: quantity,
+                    probability: probability,
+                    value: 0
+                });
+            }
+        }
+
+        return result;
+    }
+
+
+    // =========================
+    // 初始化
+    // =========================
+
+    renderCosts();
+
+    renderPrizes();
+
+    calculate();
+
+</script>
+
+
+
+
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
+</body>
+</html>
+
