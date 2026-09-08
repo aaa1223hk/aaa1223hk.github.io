@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>關於本站｜About — aaa1223hk</title>
+  <meta name="description" content="關於本站：個人製作的遊戲機率與實用小工具集合。About this site.">
+  <style>
+    :root {
+      --bg: #0b1020;
+      --card: #121a2f;
+      --text: #ecf2ff;
+      --muted: #9cadcf;
+      --primary: #7c9cff;
+      --line: #263455;
+      --radius: 16px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at 20% 10%, rgba(124,156,255,.12), transparent 30%),
+                  radial-gradient(circle at 80% 0%, rgba(156,124,255,.1), transparent 28%),
+                  var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      line-height: 1.65;
+    }
+    .wrap {
+      width: min(720px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 48px 0 64px;
+    }
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+    h1 {
+      font-size: clamp(28px, 5vw, 36px);
+      margin: 0 0 8px;
+      letter-spacing: -0.02em;
+    }
+    .lead {
+      color: var(--muted);
+      margin: 0 0 32px;
+      font-size: 15px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 24px 26px;
+      margin-bottom: 20px;
+    }
+    .card h2 {
+      margin: 0 0 12px;
+      font-size: 18px;
+      color: var(--primary);
+    }
+    .card p { margin: 0 0 12px; }
+    .card p:last-child { margin-bottom: 0; }
+    .lang-label {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .contact-box {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .discord-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: #5865F2;
+      color: #fff !important;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 14px;
+      text-decoration: none !important;
+    }
+    .discord-btn:hover { filter: brightness(1.08); }
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #eef2f8;
+        --card: #ffffff;
+        --text: #152033;
+        --muted: #5c6b86;
+        --primary: #3b6cff;
+        --line: #d5dbe8;
+      }
+      body {
+        background: radial-gradient(circle at 20% 10%, rgba(59,108,255,.06), transparent 30%),
+                    var(--bg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="back" href="/">← 返回首頁 / Home</a>
+
+    <h1>關於本站 / About</h1>
+    <p class="lead">個人製作的遊戲相關小工具集合站</p>
+
+    <!-- 中文 -->
+    <div class="card">
+      <div class="lang-label">中文</div>
+      <h2>關於本站</h2>
+      <p>這裡是我陸續放上的一些遊戲實用小工具，例如抽蛋成本與期望計算、機率模擬、寶可夢數值、QR 碼生成等。主要目的是方便自己與朋友快速查詢、驗證直覺，以及減少重複計算的時間。</p>
+      <p>所有工具皆為個人興趣開發，不隸屬於任何遊戲官方。結果僅供參考，實際遊戲數值仍以官方公告為準。</p>
+      <p>如果工具有錯誤、建議，或想聊聊遊戲相關話題，歡迎透過下方方式聯絡。</p>
+    </div>
+
+    <!-- English -->
+    <div class="card">
+      <div class="lang-label">English</div>
+      <h2>About this site</h2>
+      <p>This site hosts a collection of small game-related tools I built for personal use and for friends — including gacha cost &amp; expected value calculators, probability simulators, Pokémon stat tools, QR code generators, and more.</p>
+      <p>These tools are made for convenience and quick verification of intuition. They are not affiliated with any game publisher. Always refer to official sources for actual in-game values.</p>
+      <p>If you find a bug, have a suggestion, or just want to chat about games, feel free to reach out via the contact method below.</p>
+    </div>
+
+    <!-- Contact -->
+    <div class="card">
+      <div class="lang-label">聯絡方式 / Contact</div>
+      <h2>Discord</h2>
+      <p>想找我的話，請到 Discord 伺服器找我：</p>
+      <p>To contact me, please join the Discord server and look for me there:</p>
+      <div class="contact-box">
+        <a class="discord-btn" href="https://discord.gg/bRBH6PHGFe" target="_blank" rel="noopener">
+          加入 Discord / Join Server
+        </a>
+        <span style="color:var(--muted);font-size:14px;">discord.gg/bRBH6PHGFe</span>
+      </div>
+    </div>
+
+    <footer>
+      aaa1223hk · 個人工具站
+    </footer>
+  </div>
+</body>
+</html>
