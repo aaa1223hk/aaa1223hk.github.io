@@ -479,11 +479,50 @@
       color: var(--text) !important;
       border-color: var(--line) !important;
     }
-    .theme-btn {
+    .top-controls {
       position: fixed;
       top: 18px;
       right: 18px;
       z-index: 40;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .lang-switch {
+      display: inline-flex;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      overflow: hidden;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+    .lang-btn {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      height: 36px;
+      padding: 0 11px;
+      cursor: pointer;
+    }
+    .lang-btn:hover { color: var(--text); background: rgba(124,156,255,.08); }
+    .lang-btn.active {
+      color: var(--text);
+      background: rgba(124,156,255,.14);
+      font-weight: 700;
+    }
+    body:not(.dark-theme) .lang-switch {
+      background: #ffffff !important;
+      border-color: var(--line) !important;
+    }
+    body:not(.dark-theme) .lang-btn { color: #5c6b86 !important; }
+    body:not(.dark-theme) .lang-btn.active {
+      color: #152033 !important;
+      background: #e8eef8 !important;
+    }
+    .theme-btn {
       width: 42px;
       height: 42px;
       border-radius: 999px;
@@ -524,7 +563,14 @@
       <path d="M4 7h16M4 12h16M4 17h16"/>
     </svg>
   </button>
-  <button type="button" class="theme-btn" id="theme-toggle" aria-label="切換深淺色模式" title="切換深淺色模式">🌛</button>
+  <div class="top-controls">
+    <div class="lang-switch" role="group" aria-label="Language">
+      <button type="button" class="lang-btn active" data-lang="zh" aria-pressed="true">中</button>
+      <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+      <button type="button" class="lang-btn" data-lang="ja" aria-pressed="false">日</button>
+    </div>
+    <button type="button" class="theme-btn" id="theme-toggle" aria-label="切換深淺色模式" title="切換深淺色模式">🌛</button>
+  </div>
   <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
   <aside class="drawer" id="drawer" role="dialog" aria-label="選單">
     <div class="drawer-header">
@@ -548,95 +594,95 @@
         <span class="theme-toggle-icon">🌙</span>
         <span class="theme-toggle-text">深色模式</span>
       </button>
-      <a href="https://aaa1223hk.github.io/about.html" target="_blank" rel="noopener" class="drawer-about-link" style="display:block;margin-top:10px;padding:10px 14px;text-align:left;color:var(--muted, #9cadcf);font-size:13px;text-decoration:none;border-radius:8px;">關於本站 / About</a>
+      <a href="https://aaa1223hk.github.io/about.html" target="_blank" rel="noopener" class="drawer-about-link" style="display:block;margin-top:10px;padding:10px 14px;text-align:left;color:var(--muted, #9cadcf);font-size:13px;text-decoration:none;border-radius:8px;"><span data-i18n="about">關於本站 / About</span></a>
     </div>
   </aside>
 
   <div class="wrap">
     <header>
-      <span class="eyebrow">🎲 基本機率直覺工具</span>
-      <h1>遊戲機率模擬器</h1>
-      <p class="lead">輸入官方宣稱的成功率，看看「抽幾次」與「至少成功一次」之間到底是什麼關係。可用蒙地卡羅模擬驗證理論值，並加入多項成本估算。</p>
+      <span class="eyebrow" data-i18n="eyebrow">🎲 基本機率直覺工具</span>
+      <h1 data-i18n="title">遊戲機率模擬器</h1>
+      <p class="lead" data-i18n="lead">輸入官方宣稱的成功率，看看「抽幾次」與「至少成功一次」之間到底是什麼關係。可用蒙地卡羅模擬驗證理論值，並加入多項成本估算。</p>
     </header>
 
     <main class="grid">
       <section class="grid top">
         <div class="card">
-          <h2>① 設定機率與試驗</h2>
-          <p class="sub">每次抽取彼此獨立，且每次成功率固定不變。</p>
+          <h2 data-i18n="s1">① 設定機率與試驗</h2>
+          <p class="sub" data-i18n="s1-sub">每次抽取彼此獨立，且每次成功率固定不變。</p>
 
           <div class="form-grid">
             <div>
-              <label for="prob">單次成功機率 p（%）</label>
+              <label for="prob" data-i18n="label-p">單次成功機率 p（%）</label>
               <div class="range-row">
                 <input id="probRange" type="range" min="0.01" max="100" step="0.01" value="10">
                 <input id="prob" type="number" min="0.01" max="100" step="0.01" value="10">
               </div>
-              <div class="hint">例如官方說「10% 成功」。</div>
+              <div class="hint" data-i18n="hint-p">例如官方說「10% 成功」。</div>
             </div>
             <div>
-              <label for="attempts">每組抽取／試驗次數 n</label>
+              <label for="attempts" data-i18n="label-n">每組抽取／試驗次數 n</label>
               <input id="attempts" type="number" min="1" max="1000000" step="1" value="10">
-              <div class="hint">用來觀察「做 n 次，至少成功一次」的機率。</div>
+              <div class="hint" data-i18n="hint-n">用來觀察「做 n 次，至少成功一次」的機率。</div>
             </div>
             <div>
-              <label for="runs">模擬組數（每組都做 n 次）</label>
+              <label for="runs" data-i18n="label-runs">模擬組數（每組都做 n 次）</label>
               <input id="runs" type="number" min="100" max="200000" step="100" value="10000">
-              <div class="hint">越大越穩定，但運算量也更高。</div>
+              <div class="hint" data-i18n="hint-runs">越大越穩定，但運算量也更高。</div>
             </div>
             <div>
-              <label for="seed">亂數種子（可選）</label>
-              <input id="seed" type="number" min="0" max="2147483647" step="1" placeholder="留空＝隨機">
-              <div class="hint">填入同一數字，可重現相同結果。</div>
+              <label for="seed" data-i18n="label-seed">亂數種子（可選）</label>
+              <input id="seed" type="number" min="0" max="2147483647" step="1" placeholder="留空＝隨機" data-i18n-placeholder="ph-seed">
+              <div class="hint" data-i18n="hint-seed">填入同一數字，可重現相同結果。</div>
             </div>
           </div>
 
           <div class="actions">
-            <button class="primary" id="runBtn">▶ 執行模擬</button>
+            <button class="primary" id="runBtn">▶ <span data-i18n="run">執行模擬</span></button>
             
-            <button class="reset" id="resetBtn">↺ 重設</button>
+            <button class="reset" id="resetBtn">↺ <span data-i18n="reset">重設</span></button>
           </div>
-          <div class="status" id="status">尚未執行模擬。</div>
+          <div class="status" id="status"><span data-i18n="status-idle">尚未執行模擬。</span></div>
         </div>
 
         <div class="card">
-          <h2>② 理論值：要做幾次才有 X% 機會成功？</h2>
-          <p class="sub">這裡的「成功」指 <strong>至少成功一次</strong>。</p>
+          <h2 data-i18n="s2">② 理論值：要做幾次才有 X% 機會成功？</h2>
+          <p class="sub" data-i18n="s2-sub">這裡的「成功」指至少成功一次。</p>
 
           <div class="table-wrap">
             <table>
-              <thead><tr><th>目標至少成功率</th><th>預期最少試驗次數</th><th>達標後實際理論值</th><th>達標成本</th></tr></thead>
+              <thead><tr><th data-i18n="th-target">目標至少成功率</th><th data-i18n="th-trials">預期最少試驗次數</th><th data-i18n="th-actual">達標後實際理論值</th><th data-i18n="th-cost">達標成本</th></tr></thead>
               <tbody id="targetTable"></tbody>
             </table>
           </div>
 
           <div style="margin-top:14px" class="formula" id="formula">P(至少成功一次) = 1 − (1 − p)ⁿ</div>
           <div class="metric-grid">
-            <div class="metric"><div class="k">目前 n 的理論成功率</div><div class="v success" id="theoryRate">—</div></div>
-            <div class="metric"><div class="k">期望成功次數（n × p）</div><div class="v" id="expectedSuccess">—</div></div>
-            <div class="metric"><div class="k">平均首次成功所需次數</div><div class="v warn" id="expectedAttempts">—</div></div>
-            <div class="metric"><div class="k">每 n 次全部失敗的機率</div><div class="v" id="failRate">—</div></div>
+            <div class="metric"><div class="k"><span data-i18n="m-theory">目前 n 的理論成功率</span></div><div class="v success" id="theoryRate">—</div></div>
+            <div class="metric"><div class="k"><span data-i18n="m-expected">期望成功次數（n × p）</span></div><div class="v" id="expectedSuccess">—</div></div>
+            <div class="metric"><div class="k"><span data-i18n="m-first">平均首次成功所需次數</span></div><div class="v warn" id="expectedAttempts">—</div></div>
+            <div class="metric"><div class="k"><span data-i18n="m-fail">每 n 次全部失敗的機率</span></div><div class="v" id="failRate">—</div></div>
           </div>
         </div>
       </section>
 
       <section class="card">
-        <h2>③ 失敗風險：降級／破壞機率</h2>
-        <p class="sub">可選填。模型假設每次結果只有三種：成功、破壞（或降級）、無變化。若成功率是 10%、破壞率是 2%，其餘 88% 就是無變化。</p>
+        <h2 data-i18n="s3">③ 失敗風險：降級／破壞機率</h2>
+        <p class="sub" data-i18n="s3-sub">可選填。模型假設每次結果只有三種：成功、破壞（或降級）、無變化。若成功率是 10%、破壞率是 2%，其餘 88% 就是無變化。</p>
         <div class="form-grid">
           <div>
-            <label for="dangerProb">破壞／降級機率（%）</label>
+            <label for="dangerProb" data-i18n="label-danger">破壞／降級機率（%）</label>
             <div class="range-row">
               <input id="dangerProbRange" type="range" min="0" max="99.99" step="0.01" value="0">
               <input id="dangerProb" type="number" min="0" max="99.99" step="0.01" value="0">
             </div>
-            <div class="hint">必須滿足：成功率 + 破壞率 ≤ 100%。</div>
+            <div class="hint" data-i18n="hint-danger">必須滿足：成功率 + 破壞率 ≤ 100%。</div>
           </div>
           <div>
-            <label>目前機率拆分</label>
+            <label data-i18n="prob-split">目前機率拆分</label>
             <div class="metric" style="height:100%;display:flex;align-items:center">
               <div>
-                <div class="k">無變化機率</div>
+                <div class="k" data-i18n="no-change">無變化機率</div>
                 <div class="v" id="safeProb">—</div>
               </div>
             </div>
@@ -644,15 +690,15 @@
         </div>
 
         <div class="decision-grid">
-          <div class="metric"><div class="k">持續嘗試最終成功</div><div class="v success" id="eventualSuccess">—</div></div>
-          <div class="metric"><div class="k">持續嘗試最終破壞</div><div class="v warn" id="eventualDanger">—</div></div>
-          <div class="metric"><div class="k">在 n 次內先成功</div><div class="v success" id="successBeforeN">—</div></div>
-          <div class="metric"><div class="k">在 n 次內先破壞</div><div class="v warn" id="dangerBeforeN">—</div></div>
+          <div class="metric"><div class="k"><span data-i18n="m-eventual-s">持續嘗試最終成功</span></div><div class="v success" id="eventualSuccess">—</div></div>
+          <div class="metric"><div class="k"><span data-i18n="m-eventual-d">持續嘗試最終破壞</span></div><div class="v warn" id="eventualDanger">—</div></div>
+          <div class="metric"><div class="k"><span data-i18n="m-before-s">在 n 次內先成功</span></div><div class="v success" id="successBeforeN">—</div></div>
+          <div class="metric"><div class="k"><span data-i18n="m-before-d">在 n 次內先破壞</span></div><div class="v warn" id="dangerBeforeN">—</div></div>
         </div>
 
         <div class="decision-banner">
           <div class="title" id="decisionTitle">—</div>
-          <div class="desc" id="decisionDesc">輸入破壞率後，這裡會整理目前嘗試的風險與成本。</div>
+          <div class="desc" id="decisionDesc" data-i18n="decision-idle">輸入破壞率後，這裡會整理目前嘗試的風險與成本。</div>
           <div class="risk-meter"><span id="riskBar"></span></div>
         </div>
       </section>
@@ -661,23 +707,23 @@
         <div class="cost-header">
           <div>
             <div class="section-kicker">COST BREAKDOWN</div>
-            <h2>④ 成本計算 <span class="cost-count">可 0 項／多項</span></h2>
-            <p class="sub">每一列代表「每抽 1 次」會消耗多少。輸入多種資源後，下方會逐項換算目前 n 次，以及 90%／95%／99% 目標所需成本。</p>
+            <h2><span data-i18n="s4">④ 成本計算</span> <span class="cost-count">可 0 項／多項</span></h2>
+            <p class="sub" data-i18n="s4-sub">每一列代表「每抽 1 次」會消耗多少。輸入多種資源後，下方會逐項換算<span data-i18n="for-n">目前 n 次</span>，以及 90%／95%／99% 目標所需成本。</p>
           </div>
-          <button class="add add-cost-btn" id="addCost"><span>＋</span> 新增成本</button>
+          <button class="add add-cost-btn" id="addCost"><span>＋</span> <span data-i18n="add-cost">新增成本</span></button>
         </div>
 
         <div class="cost-list-head">
-          <span>成本項目</span>
-          <span>每抽消耗</span>
+          <span><span data-i18n="cost-item">成本項目</span></span>
+          <span><span data-i18n="cost-per">每抽消耗</span></span>
           <span></span>
         </div>
         <div class="cost-list" id="costList"></div>
 
         <div class="cost-empty" id="costEmpty">
           <div class="cost-empty-icon">＋</div>
-          <strong>尚未加入成本</strong>
-          <span>點擊「新增成本」開始建立成本明細</span>
+          <strong><span data-i18n="no-cost">尚未加入成本</span></strong>
+          <span><span data-i18n="no-cost-hint">點擊「新增成本」開始建立成本明細</span></span>
         </div>
 
         <div class="cost-total">
@@ -685,12 +731,12 @@
             <div class="summary-title">
               <span class="summary-icon">↻</span>
               <div>
-                <div class="note">每次試驗</div>
-                <strong>單次成本明細</strong>
+                <div class="note"><span data-i18n="per-trial">每次試驗</span></div>
+                <strong><span data-i18n="cost-detail">單次成本明細</span></strong>
               </div>
             </div>
             <div id="costPerAttempt" class="cost-breakdown">
-              <span class="pill">未設定成本</span>
+              <span class="pill"><span data-i18n="no-cost-set">未設定成本</span></span>
             </div>
           </div>
 
@@ -698,54 +744,54 @@
             <div class="summary-title">
               <span class="summary-icon">×</span>
               <div>
-                <div class="note">目前 n 次</div>
-                <strong>累計成本明細</strong>
+                <div class="note" data-i18n="for-n">目前 n 次</div>
+                <strong><span data-i18n="cost-total">累計成本明細</span></strong>
               </div>
             </div>
             <div id="costForN" class="cost-breakdown">
-              <span class="pill">未設定成本</span>
+              <span class="pill" data-i18n="no-cost-set">未設定成本</span>
             </div>
           </div>
         </div>
       </section>
 
       <section class="card">
-        <h2>⑤ 模擬結果直方圖</h2>
-        <p class="sub">直方圖顯示：在每一組做 n 次時，最後「成功了幾次」。虛線理論平均值 = n × p。</p>
+        <h2 data-i18n="s5">⑤ 模擬結果直方圖</h2>
+        <p class="sub" data-i18n="s5-sub">直方圖顯示：在每一組做 n 次時，最後「成功了幾次」。虛線理論平均值 = n × p。</p>
         <div class="chart-wrap"><canvas id="histogram"></canvas></div>
         <div class="metric-grid">
-          <div class="metric"><div class="k">模擬平均成功次數</div><div class="v" id="simMean">—</div></div>
-          <div class="metric"><div class="k">理論平均成功次數</div><div class="v" id="theoryMean">—</div></div>
-          <div class="metric"><div class="k">模擬「至少成功一次」</div><div class="v success" id="simAtLeast">—</div></div>
-          <div class="metric"><div class="k">理論「至少成功一次」</div><div class="v success" id="theoryAtLeast">—</div></div>
+          <div class="metric"><div class="k"><span data-i18n="m-sim-mean">模擬平均成功次數</span></div><div class="v" id="simMean">—</div></div>
+          <div class="metric"><div class="k"><span data-i18n="m-theory-mean">理論平均成功次數</span></div><div class="v" id="theoryMean">—</div></div>
+          <div class="metric"><div class="k"><span data-i18n="m-sim-least">模擬「至少成功一次」</span></div><div class="v success" id="simAtLeast">—</div></div>
+          <div class="metric"><div class="k"><span data-i18n="m-theory-least">理論「至少成功一次」</span></div><div class="v success" id="theoryAtLeast">—</div></div>
         </div>
       </section>
 
       <section class="grid two">
         <div class="card">
-          <h2>⑥ 怎麼讀懂結果？</h2>
+          <h2 data-i18n="s6">⑥ 怎麼讀懂結果？</h2>
           <div class="explain">
-            <div class="tip"><strong>「10%」不是「10 抽必出」</strong>每次都是 10% 的獨立事件。連續失敗不會自動讓下一抽變高。</div>
-            <div class="tip"><strong>90% 也不是保證</strong>90% 表示長期、重複相同條件時約有 90% 的組別會至少成功一次。</div>
-            <div class="tip"><strong>模擬和理論不會完全一樣</strong>有限次模擬會有隨機波動；增加模擬組數，通常會更接近理論值。</div>
+            <div class="tip" data-i18n="tip1"><strong>「10%」不是「10 抽必出」</strong>每次都是 10% 的獨立事件。連續失敗不會自動讓下一抽變高。</div>
+            <div class="tip" data-i18n="tip2"><strong>90% 也不是保證</strong>90% 表示長期、重複相同條件時約有 90% 的組別會至少成功一次。</div>
+            <div class="tip" data-i18n="tip3"><strong>模擬和理論不會完全一樣</strong>有限次模擬會有隨機波動；增加模擬組數，通常會更接近理論值。</div>
           </div>
         </div>
 
         <div class="card">
-          <h2>⑦ 互動教學小實驗</h2>
-          <p class="sub">先猜，再跑：把「10% 成功」時的 n 改成 1、5、10、22、44，看看直覺是否正確。</p>
+          <h2 data-i18n="s7">⑦ 互動教學小實驗</h2>
+          <p class="sub" data-i18n="s7-sub">先猜，再跑：把「10% 成功」時的 n 改成 1、5、10、22、44，看看直覺是否正確。</p>
           <div class="formula">
             90%：n ≥ log(1−0.90) / log(1−0.10) ≈ 21.85 → 22 次<br>
             95%：≈ 28.43 → 29 次<br>
             99%：≈ 43.71 → 44 次
           </div>
-          <p class="hint">提醒：以上數值是「至少成功一次」的理論門檻，不是保證在該次數內必定成功。</p>
+          <p class="hint" data-i18n="s7-hint">提醒：以上數值是「至少成功一次」的理論門檻，不是保證在該次數內必定成功。</p>
         </div>
       </section>
     </main>
 
     <section class="friend-ad" aria-label="友誼小廣告">
-      <h2>友誼小廣告</h2>
+      <h2 data-i18n="ad">友誼小廣告</h2>
       <script>
   atOptions = {
     'key' : 'e68adc920535b711c4ec193ff326d78d',
@@ -758,7 +804,7 @@
 <script data-cfasync="false" src="https://bauval.org/22/e68adc920535b711c4ec193ff326d78d"></script>
     </section>
 
-    <div class="footer">@歐小龍 2026/11/24 更新</div>
+    <div class="footer">@歐小龍 2026/9/1 更新</div>
   </div>
 
 
@@ -845,18 +891,25 @@
     const title = $('decisionTitle');
     const desc = $('decisionDesc');
 
+    const L = (window.I18N && window.__lang && I18N[window.__lang]) || {};
     if (p <= 0){
-      title.textContent = '⛔ 沒有成功機率';
-      desc.textContent = '成功率為 0%，目前設定下不適合進行這項嘗試。';
+      title.textContent = L['dec-no-p'] || '⛔ 沒有成功機率';
+      desc.textContent = L['dec-no-p-desc'] || '成功率為 0%，目前設定下不適合進行這項嘗試。';
     } else if (d === 0 && c === 0){
-      title.textContent = '🟢 沒有破壞風險，也沒有抽取成本';
-      desc.textContent = `在 ${fmt(n,0)} 次內至少成功一次的理論機率為 ${pct(theoreticalAtLeast(p,n),3)}。`;
+      title.textContent = L['dec-safe'] || '🟢 沒有破壞風險，也沒有抽取成本';
+      desc.textContent = (L['dec-safe-desc'] || '在 {n} 次內至少成功一次的理論機率為 {p}。')
+        .replace('{n}', fmt(n,0)).replace('{p}', pct(theoreticalAtLeast(p,n),3));
     } else if (d === 0){
-      title.textContent = '🟡 沒有破壞風險，但有抽取成本';
-      desc.textContent = `做 ${fmt(n,0)} 次需要：${costText}；是否值得，主要取決於成功帶來的收益。`;
+      title.textContent = L['dec-cost'] || '🟡 沒有破壞風險，但有抽取成本';
+      desc.textContent = (L['dec-cost-desc'] || '做 {n} 次需要：{c}；是否值得，主要取決於成功帶來的收益。')
+        .replace('{n}', fmt(n,0)).replace('{c}', costText);
     } else {
-      title.textContent = risk >= 30 ? '🔴 破壞風險偏高，需謹慎嘗試' : '🟡 有破壞風險，建議一起看成本';
-      desc.textContent = `做 ${fmt(n,0)} 次需要：${costText}；若持續抽到成功或破壞，最終成功機率約 ${pct(p/(p+d),3)}，最終破壞機率約 ${pct(d/(p+d),3)}。`;
+      title.textContent = risk >= 30
+        ? (L['dec-high'] || '🔴 破壞風險偏高，需謹慎嘗試')
+        : (L['dec-risk'] || '🟡 有破壞風險，建議一起看成本');
+      desc.textContent = (L['dec-risk-desc'] || '做 {n} 次需要：{c}；若持續抽到成功或破壞，最終成功機率約 {s}，最終破壞機率約 {d}。')
+        .replace('{n}', fmt(n,0)).replace('{c}', costText)
+        .replace('{s}', pct(p/(p+d),3)).replace('{d}', pct(d/(p+d),3));
     }
   }
 
@@ -905,14 +958,14 @@
 
   function formatCostSummary(n){
     const costs = readCosts();
-    if (!costs.length) return '<span class="pill">未設定成本</span>';
+    if (!costs.length) { const t=(window.I18N&&window.__lang&&I18N[window.__lang]&&I18N[window.__lang]['no-cost-set'])||'未設定成本'; return '<span class="pill">'+t+'</span>'; }
     if (!Number.isFinite(n)) return '—';
     return costs.map(c => `${fmt(c.value * n, 2)} ${escapeHtml(c.name)}`).join('、');
   }
 
   function formatCostText(n){
     const costs = readCosts();
-    if (!costs.length) return '未設定成本';
+    if (!costs.length) return (window.I18N&&window.__lang&&I18N[window.__lang]&&I18N[window.__lang]['no-cost-set'])||'未設定成本';
     if (!Number.isFinite(n)) return '—';
     return costs.map(c => `${fmt(c.value * n, 2)} ${escapeHtml(c.name)}`).join('、');
   }
@@ -946,7 +999,8 @@
     $('failRate').textContent = pct(1 - atLeast, 3);
     $('theoryMean').textContent = fmt(n * p, 3);
     $('theoryAtLeast').textContent = pct(atLeast, 3);
-    $('formula').textContent = `P(至少成功一次) = 1 − (1 − ${fmt(p*100,2)}%)^${fmt(n,0)} = ${pct(atLeast,3)}`;
+    const fp = (window.I18N && window.__lang && I18N[window.__lang] && I18N[window.__lang]['formula-prefix']) || 'P(至少成功一次)';
+    $('formula').textContent = `${fp} = 1 − (1 − ${fmt(p*100,2)}%)^${fmt(n,0)} = ${pct(atLeast,3)}`;
     updateTargetTable();
     updateCosts();
   }
@@ -974,7 +1028,7 @@
 
   function renderCostBreakdown(costs, multiplier=1){
     if (!costs.length){
-      return '<span class="pill">未設定成本</span>';
+      const _t=(window.I18N&&window.__lang&&I18N[window.__lang]&&I18N[window.__lang]['no-cost-set'])||'未設定成本'; return '<span class="pill">'+_t+'</span>';
     }
     return costs.map(c => `
       <span class="cost-item">
@@ -1216,8 +1270,8 @@
     attempts.value=defaults.attempts; runs.value=defaults.runs; seed.value=defaults.seed;
     dangerProb.value=0; dangerProbRange.value=0;
     costList.innerHTML='';
-    $('costPerAttempt').innerHTML='<span class="pill">未設定成本</span>';
-    $('costForN').innerHTML='<span class="pill">未設定成本</span>';
+    (function(){const t=(window.I18N&&window.__lang&&I18N[window.__lang]&&I18N[window.__lang]['no-cost-set'])||'未設定成本'; $('costPerAttempt').innerHTML='<span class="pill">'+t+'</span>';})();
+    (function(){const t=(window.I18N&&window.__lang&&I18N[window.__lang]&&I18N[window.__lang]['no-cost-set'])||'未設定成本'; $('costForN').innerHTML='<span class="pill">'+t+'</span>';})();
     $('costEmpty').style.display='flex';
     lastHistogram=[];
     $('status').textContent='已重設。尚未執行模擬。';
@@ -1236,5 +1290,258 @@
   (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
   <script src="shared/drawer.js"></script>
+<script>
+  // ===== i18n =====
+  window.I18N = window.I18N || {};
+  const I18N = window.I18N = {
+    zh: {
+      title: "遊戲機率模擬器",
+      lead: "輸入官方宣稱的成功率，看看「抽幾次」與「至少成功一次」之間到底是什麼關係。可用蒙地卡羅模擬驗證理論值，並加入多項成本估算。",
+      eyebrow: "🎲 基本機率直覺工具",
+      s1: "① 設定機率與試驗",
+      s2: "② 理論值：要做幾次才有 X% 機會成功？",
+      s3: "③ 失敗風險：降級／破壞機率",
+      s4: "④ 成本計算",
+      s5: "⑤ 模擬結果直方圖",
+      s6: "⑥ 怎麼讀懂結果？",
+      s7: "⑦ 互動教學小實驗",
+      ad: "友誼小廣告",
+      run: "執行模擬",
+      reset: "重設",
+      "status-idle": "尚未執行模擬。",
+      "add-cost": "新增成本",
+      "no-cost": "尚未加入成本",
+      "no-cost-hint": "點擊「新增成本」開始建立成本明細",
+      about: "關於本站 / About",
+      "s1-sub": "每次抽取彼此獨立，且每次成功率固定不變。",
+      "label-p": "單次成功機率 p（%）",
+      "hint-p": "例如官方說「10% 成功」。",
+      "label-n": "每組抽取／試驗次數 n",
+      "hint-n": "用來觀察「做 n 次，至少成功一次」的機率。",
+      "label-runs": "模擬組數（每組都做 n 次）",
+      "hint-runs": "越大越穩定，但運算量也更高。",
+      "label-seed": "亂數種子（可選）",
+      "hint-seed": "填入同一數字，可重現相同結果。",
+      "s2-sub": "這裡的「成功」指至少成功一次。",
+      "th-target": "目標至少成功率",
+      "th-trials": "預期最少試驗次數",
+      "th-actual": "達標後實際理論值",
+      "th-cost": "達標成本",
+      "m-theory": "目前 n 的理論成功率",
+      "m-expected": "期望成功次數（n × p）",
+      "m-first": "平均首次成功所需次數",
+      "m-fail": "每 n 次全部失敗的機率",
+      "s3-sub": "可選填。模型假設每次結果只有三種：成功、破壞（或降級）、無變化。若成功率是 10%、破壞率是 2%，其餘 88% 就是無變化。",
+      "label-danger": "破壞／降級機率（%）",
+      "hint-danger": "必須滿足：成功率 + 破壞率 ≤ 100%。",
+      "m-eventual-s": "持續嘗試最終成功",
+      "m-eventual-d": "持續嘗試最終破壞",
+      "m-before-s": "在 n 次內先成功",
+      "m-before-d": "在 n 次內先破壞",
+      "s4-sub": "每一列代表「每抽 1 次」會消耗多少。輸入多種資源後，下方會逐項換算目前 n 次，以及 90%／95%／99% 目標所需成本。",
+      "cost-item": "成本項目",
+      "cost-per": "每抽消耗",
+      "per-trial": "每次試驗",
+      "cost-detail": "單次成本明細",
+      "for-n": "目前 n 次",
+      "cost-total": "累計成本明細",
+      "no-cost-set": "未設定成本",
+      "s5-sub": "直方圖顯示：在每一組做 n 次時，最後「成功了幾次」。虛線理論平均值 = n × p。",
+      "m-sim-mean": "模擬平均成功次數",
+      "m-theory-mean": "理論平均成功次數",
+      "m-sim-least": "模擬「至少成功一次」",
+      "m-theory-least": "理論「至少成功一次」",
+      tip1: "「10%」不是「10 抽必出」。每次都是 10% 的獨立事件。連續失敗不會自動讓下一抽變高。",
+      tip2: "90% 也不是保證。90% 表示長期、重複相同條件時約有 90% 的組別會至少成功一次。",
+      tip3: "模擬和理論不會完全一樣。有限次模擬會有隨機波動；增加模擬組數，通常會更接近理論值。",
+      "s7-sub": "先猜，再跑：把「10% 成功」時的 n 改成 1、5、10、22、44，看看直覺是否正確。",
+      "s7-hint": "提醒：以上數值是「至少成功一次」的理論門檻，不是保證在該次數內必定成功。",
+      "ph-seed": "留空＝隨機",
+      "prob-split": "目前機率拆分",
+      "no-change": "無變化機率",
+      "decision-idle": "輸入破壞率後，這裡會整理目前嘗試的風險與成本。",
+      "formula-prefix": "P(至少成功一次)"
+
+    },
+    en: {
+      title: "Game Probability Simulator",
+      lead: "Enter the official success rate and explore the relationship between number of trials and the chance of at least one success. Supports Monte Carlo simulation and multi-item cost estimation.",
+      eyebrow: "🎲 Probability intuition tool",
+      s1: "① Probability & Trials",
+      s2: "② How many trials for X% chance of success?",
+      s3: "③ Failure risk: downgrade / destroy rate",
+      s4: "④ Cost calculation",
+      s5: "⑤ Simulation histogram",
+      s6: "⑥ How to read the results",
+      s7: "⑦ Interactive mini experiment",
+      ad: "Friendly ad",
+      run: "Run simulation",
+      reset: "Reset",
+      "status-idle": "Simulation not run yet.",
+      "add-cost": "Add cost",
+      "no-cost": "No costs added",
+      "no-cost-hint": "Click “Add cost” to start building the cost list",
+      about: "About",
+      "s1-sub": "Each draw is independent, and the success rate stays the same every time.",
+      "label-p": "Success rate p (%)",
+      "hint-p": "e.g. the game says “10% success”.",
+      "label-n": "Trials per group n",
+      "hint-n": "Used to observe the chance of at least one success in n trials.",
+      "label-runs": "Number of simulation groups",
+      "hint-runs": "Larger is more stable, but costs more computation.",
+      "label-seed": "Random seed (optional)",
+      "hint-seed": "Use the same number to reproduce the same result.",
+      "s2-sub": "Here “success” means at least one success.",
+      "th-target": "Target success chance",
+      "th-trials": "Min. trials needed",
+      "th-actual": "Actual theory value",
+      "th-cost": "Cost at target",
+      "m-theory": "Theory success rate at n",
+      "m-expected": "Expected successes (n × p)",
+      "m-first": "Avg. trials to first success",
+      "m-fail": "Chance all n trials fail",
+      "s3-sub": "Optional. Model assumes three outcomes each time: success, destroy (or downgrade), or no change. If success is 10% and destroy is 2%, the remaining 88% is no change.",
+      "label-danger": "Destroy / downgrade rate (%)",
+      "hint-danger": "Must satisfy: success rate + destroy rate ≤ 100%.",
+      "m-eventual-s": "Eventual success (keep trying)",
+      "m-eventual-d": "Eventual destroy (keep trying)",
+      "m-before-s": "Success first within n trials",
+      "m-before-d": "Destroy first within n trials",
+      "s4-sub": "Each row is the cost of one draw. After adding resources, totals for current n and for 90%/95%/99% targets are calculated.",
+      "cost-item": "Cost item",
+      "cost-per": "Per draw",
+      "per-trial": "Per trial",
+      "cost-detail": "Single-trial cost detail",
+      "for-n": "For current n",
+      "cost-total": "Cumulative cost detail",
+      "no-cost-set": "No cost set",
+      "s5-sub": "Histogram shows how many successes occurred in each group of n trials. Dashed line = theory mean n × p.",
+      "m-sim-mean": "Simulated mean successes",
+      "m-theory-mean": "Theory mean successes",
+      "m-sim-least": "Simulated “at least one success”",
+      "m-theory-least": "Theory “at least one success”",
+      tip1: "“10%” is not “guaranteed in 10 draws”. Each trial is an independent 10% event. Failures do not raise the next chance.",
+      tip2: "90% is not a guarantee. It means that over many repeated groups under the same conditions, about 90% of groups get at least one success.",
+      tip3: "Simulation and theory will not match exactly. Finite runs have random noise; more groups usually get closer to theory.",
+      "s7-sub": "Guess first, then run: change n for a 10% success rate to 1, 5, 10, 22, 44 and see if your intuition holds.",
+      "s7-hint": "Note: these are theory thresholds for “at least one success”, not a guarantee of success within that count.",
+      "ph-seed": "Leave empty = random",
+      "prob-split": "Current probability split",
+      "no-change": "No-change rate",
+      "decision-idle": "After entering a destroy rate, risk and cost of the current attempt are summarized here.",
+      "formula-prefix": "P(at least one success)"
+
+    },
+    ja: {
+      title: "ゲーム確率シミュレーター",
+      lead: "公式の成功率を入力し、「何回試すか」と「少なくとも1回成功する確率」の関係を確認できます。モンテカルロシミュレーションと複数コスト計算に対応。",
+      eyebrow: "🎲 確率直感ツール",
+      s1: "① 確率と試行回数",
+      s2: "② X%の成功確率に必要な試行回数",
+      s3: "③ 失敗リスク：降格／破壊確率",
+      s4: "④ コスト計算",
+      s5: "⑤ シミュレーション結果ヒストグラム",
+      s6: "⑥ 結果の見方",
+      s7: "⑦ インタラクティブミニ実験",
+      ad: "フレンド広告",
+      run: "シミュレーション実行",
+      reset: "リセット",
+      "status-idle": "まだ実行していません。",
+      "add-cost": "コスト追加",
+      "no-cost": "コスト未設定",
+      "no-cost-hint": "「コスト追加」を押して明細を作成",
+      about: "このサイトについて / About",
+      "s1-sub": "各抽選は独立で、毎回の成功率は固定です。",
+      "label-p": "1回の成功率 p（%）",
+      "hint-p": "例：公式が「成功率10%」と書いている場合。",
+      "label-n": "1グループの試行回数 n",
+      "hint-n": "n回のうち少なくとも1回成功する確率を見るために使います。",
+      "label-runs": "シミュレーション組数",
+      "hint-runs": "多いほど安定しますが、計算量も増えます。",
+      "label-seed": "乱数シード（任意）",
+      "hint-seed": "同じ数字を入れると同じ結果を再現できます。",
+      "s2-sub": "ここでの「成功」は少なくとも1回成功することを指します。",
+      "th-target": "目標成功率",
+      "th-trials": "必要な最少試行回数",
+      "th-actual": "達成後の理論値",
+      "th-cost": "達成コスト",
+      "m-theory": "現在のnでの理論成功率",
+      "m-expected": "期待成功回数（n × p）",
+      "m-first": "初回成功までの平均回数",
+      "m-fail": "n回すべて失敗する確率",
+      "s3-sub": "任意入力。毎回の結果を成功・破壊（または降格）・変化なしの3種と仮定します。成功10%・破壊2%なら残り88%が変化なしです。",
+      "label-danger": "破壊／降格確率（%）",
+      "hint-danger": "成功率 + 破壊率 ≤ 100% である必要があります。",
+      "m-eventual-s": "続けた場合の最終成功",
+      "m-eventual-d": "続けた場合の最終破壊",
+      "m-before-s": "n回以内に先に成功",
+      "m-before-d": "n回以内に先に破壊",
+      "s4-sub": "各行は1回抽選あたりの消費です。複数リソースを入れると、現在のn回および90%／95%／99%目標に必要なコストを計算します。",
+      "cost-item": "コスト項目",
+      "cost-per": "1回あたり",
+      "per-trial": "1回あたり",
+      "cost-detail": "単回コスト明細",
+      "for-n": "現在のn回",
+      "cost-total": "累計コスト明細",
+      "no-cost-set": "コスト未設定",
+      "s5-sub": "ヒストグラムは各グループ（n回）で何回成功したかを示します。点線は理論平均 n × p です。",
+      "m-sim-mean": "シミュレーション平均成功回数",
+      "m-theory-mean": "理論平均成功回数",
+      "m-sim-least": "シミュ「少なくとも1回成功」",
+      "m-theory-least": "理論「少なくとも1回成功」",
+      tip1: "「10%」は「10回で必ず出る」ではありません。毎回独立の10%です。連続失敗しても次が上がるわけではありません。",
+      tip2: "90%も保証ではありません。同じ条件を何度も繰り返したとき、約90%のグループが少なくとも1回成功する、という意味です。",
+      tip3: "シミュレーションと理論は完全一致しません。有限回ではランダムな揺れがあります。組数を増やすと理論に近づきやすくなります。",
+      "s7-sub": "先に予想してから実行：成功率10%のときnを1・5・10・22・44に変えて、直感が合うか確認してみてください。",
+      "s7-hint": "注意：上記は「少なくとも1回成功」の理論しきい値であり、その回数以内に必ず成功する保証ではありません。",
+      "ph-seed": "空欄＝ランダム",
+      "prob-split": "現在の確率内訳",
+      "no-change": "変化なし確率",
+      "decision-idle": "破壊率を入力すると、現在の試行リスクとコストがここに整理されます。",
+      "formula-prefix": "P(少なくとも1回成功)"
+
+    }
+  };
+
+  function setLang(lang) {
+    if (!I18N[lang]) lang = "zh";
+    window.__lang = lang;
+    try { localStorage.setItem("qr-lang", lang); } catch (e) {}
+    document.documentElement.lang = lang === "zh" ? "zh-Hant" : lang;
+    document.querySelectorAll(".lang-btn").forEach(btn => {
+      const active = btn.getAttribute("data-lang") === lang;
+      btn.classList.toggle("active", active);
+      btn.setAttribute("aria-pressed", active ? "true" : "false");
+    });
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+      const key = el.getAttribute("data-i18n");
+      if (I18N[lang] && I18N[lang][key] != null) {
+        el.textContent = I18N[lang][key];
+      }
+    });
+    document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+      const key = el.getAttribute("data-i18n-placeholder");
+      if (I18N[lang] && I18N[lang][key] != null) {
+        el.setAttribute("placeholder", I18N[lang][key]);
+      }
+    });
+    // refresh dynamic formula / decision if functions exist
+    try { if (typeof updateAll === "function") updateAll(); } catch (e) {}
+  }
+
+  // language buttons
+  document.querySelectorAll(".lang-btn").forEach(btn => {
+    btn.addEventListener("click", () => setLang(btn.getAttribute("data-lang")));
+  });
+
+  // init language
+  (function () {
+    let lang = "zh";
+    try { lang = localStorage.getItem("qr-lang") || "zh"; } catch (e) {}
+    if (!I18N[lang]) lang = "zh";
+    setLang(lang);
+  })();
+
+</script>
 </body>
 </html>
